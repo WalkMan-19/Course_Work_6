@@ -1,9 +1,9 @@
 import django_filters
-from skymarket.ads.models import Ad
+from ads.models import Ad
 
 
 class AdTitleFilter(django_filters.rest_framework.FilterSet):
-    title = django_filters.CharFilter(field_name="title", lookup_expr="icontains", )
+    title = django_filters.CharFilter(field_name="title", lookup_expr="icontains")
 
     class Meta:
         model = Ad

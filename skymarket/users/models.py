@@ -19,7 +19,7 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=70, null=False)
     phone = PhoneNumberField(null=False, unique=True)
     email = models.EmailField(unique=True)
-    role = models.CharField(max_length=25, choices=UserRoles.choices, default='user')
+    role = models.CharField(max_length=50, choices=UserRoles.choices, default='user')
     image = models.ImageField()
 
     objects = UserManager()

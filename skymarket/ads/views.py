@@ -3,18 +3,18 @@ from rest_framework import pagination, viewsets
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-from skymarket.ads.models import Ad, Comment
-from skymarket.ads.permissions import AdOwnerPermission
-from skymarket.ads.serializers import AdListSerializer, AdDetailSerializer, AdCreateSerializer, AdUpdateSerializer, \
+from ads.models import Ad, Comment
+from ads.permissions import AdOwnerPermission
+from ads.serializers import AdListSerializer, AdDetailSerializer, AdCreateSerializer, AdUpdateSerializer, \
     CommentsListSerializer, CommentCreateSerializer, CommentUpdateSerializer
-from skymarket.ads.utils import AdTitleFilter
+from ads.utils import AdTitleFilter
 
 
 class AdViewSet(viewsets.ModelViewSet):
     queryset = Ad.objects.select_related('author').all()
 
     filter_backends = [DjangoFilterBackend]
-    filterset_class = [AdTitleFilter]
+    filterset_class = AdTitleFilter
 
     serializer_classes = {
         'list': AdListSerializer,
@@ -87,8 +87,6 @@ class CommentsViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.queryset.filter(ad_id=self.kwargs['ad_pk'])
 
-
-class CommentViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         request.data['author_id'] = int(self.request.user.id)
         request.data['ad_id'] = int(self.kwargs['ad_pk'])

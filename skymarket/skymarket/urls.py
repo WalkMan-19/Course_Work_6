@@ -13,19 +13,15 @@ users_router.register("users", UserViewSet, basename="users")
 
 
 urlpatterns = [
-    path("api/admin/", admin.site.urls),
-    path("api/redoc-tasks/", include("redoc.urls")),
-    # url('auth/', include('djoser.urls.jwt')),
-
-    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
-    path("api/schema/swagger-ui/", SpectacularSwaggerView.as_view(url_name='schema')),  # Swagger
-
     path('admin/', admin.site.urls),
+
     path('api/', include(users_router.urls)),
     path('api/', include('users.urls')),
+
     path('refresh/', TokenRefreshView.as_view()),
     path('api/', include('ads.urls')),
     path('redoc/', include('redoc.urls')),
 
-]
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

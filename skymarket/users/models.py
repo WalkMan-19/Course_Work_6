@@ -20,7 +20,8 @@ class User(AbstractBaseUser):
     phone = PhoneNumberField(null=False, unique=True)
     email = models.EmailField(unique=True)
     role = models.CharField(max_length=50, choices=UserRoles.choices, default='user')
-    image = models.ImageField()
+    image = models.ImageField(upload_to="photos/", verbose_name="фото", null=True, blank=True,)
+    is_active = models.BooleanField(default=True, verbose_name='Аккаунт активен')
 
     objects = UserManager()
     USERNAME_FIELD = 'email'

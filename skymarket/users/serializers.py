@@ -16,7 +16,7 @@ class UserRegistrationSerializer(UserCreateSerializer):
         fields = '__all__'
 
 
-class CustomSerializer(UserSerializer):
+class CustomUserSerializer(UserSerializer):
     email = serializers.EmailField(read_only=True)
 
     class Meta:

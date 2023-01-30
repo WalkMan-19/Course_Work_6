@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework_simplejwt",  # JWT Authorization
+    "django_filters",
     "phonenumbers",
     "corsheaders",
     "users",
@@ -88,15 +90,19 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 4,
     'DEFAULT_AUTHENTICATION_CLASS': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
+    ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
 }
 
 
 DJOSER = {
     'SERIALIZERS': {
-        'user_create': 'users.serializers.UserRegistrationSerializer'
+        'user_create': 'users.serializers.UserCreateSerializer',
+        'user': 'users.serializers.UserSerializer',
+        'current_user': 'users.serializers.UserSerializer',
     },
-    'LOGIN_FIELD': 'email'
+    'LOGIN_FIELD': 'email',
+    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}/',
 }
 
 # Database
@@ -173,8 +179,16 @@ EMAIL_PORT = os.environ.get("EMAIL_PORT")
 
 SPECTACULAR_SETTINGS = {
     "TITLE": "Skymarket",
-    "DESCRIPTION": "",
+    "DESCRIPTION": "Skymarket API",
     "VERSION": "1.0.0"
 }
 
 AUTH_USER_MODEL = 'users.User'
+
+#  https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+

@@ -10,7 +10,7 @@ class Ad(models.Model):
     price = models.IntegerField(null=False, validators=[MinValueValidator(0)])
     description = models.CharField(max_length=1500, null=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_ad')
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(null=True)  # Просто в фикстурах объявлений было поле image
 
     class Meta:
